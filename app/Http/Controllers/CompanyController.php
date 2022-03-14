@@ -47,7 +47,7 @@ class CompanyController extends Controller
             "menu_url" => $request->menu_url,
             "category_ids" => $request->categor_ids,
             "amenities" => $request->amenities,
-            "tags" => $request->tags,
+            "tags" => str($request->tags)->upper(),
         ]);
 
 
@@ -78,13 +78,13 @@ class CompanyController extends Controller
 
         try {
             $company->update($request->all());
-            return response()->json(['message' => 'item updated']);
+            return response(['message' => 'item updated', 'status' => 200]);
         } catch (\Throwable $err) {
             if ($err->getMessage() == "Call to a member function update() on null") {
-                return response()->json(["message" => "Item with id {$id} not found"], 404);
+                return response(["message" => "Item with id {$id} not found", 'status' => 404], 404);
             }
 
-            return response()->json(['message' => 'we are experiencing some issues on our side', 'error' => $err->getMessage()], 500);
+            return response(['message' => 'we are experiencing some issues on our side', 'status' => 500, 'error' => $err->getMessage()], 500);
         }
     }
 
@@ -99,7 +99,7 @@ class CompanyController extends Controller
         $company = Company::find($id);
 
         if ($company->is_active == 1) {
-            return response(["message" => "item is already restored", "status" => 304]);
+            return response(["message" => "item is already restored", "status" => 304], 304);
         }
 
         // Activate Company
@@ -109,7 +109,7 @@ class CompanyController extends Controller
             $company->save();
             return response(["message" => "item restored", "status" => 200]);
         } catch (\Throwable $error) {
-            return response(["message" => "unable to restore item", "status" => 500, 'error' => $error->getMessage()]);
+            return response(["message" => "unable to restore item", "status" => 500, 'error' => $error->getMessage()], 500);
         }
     }
 
@@ -124,7 +124,7 @@ class CompanyController extends Controller
         $company = Company::find($id);
 
         if ($company->is_active == 0) {
-            return response(["message" => "item is already deactivated", "status" => 304]);
+            return response(["message" => "item is already deactivated", "status" => 304], 304);
         }
 
         // Deactivate Company
@@ -134,7 +134,7 @@ class CompanyController extends Controller
             $company->save();
             return response(["message" => "item deactivated", "status" => 200]);
         } catch (\Throwable $error) {
-            return response(["message" => "unable to deactivate item", "status" => 500, 'error' => $error->getMessage()]);
+            return response(["message" => "unable to deactivate item", "status" => 500, 'error' => $error->getMessage()], 500);
         }
     }
 
@@ -152,6 +152,6 @@ class CompanyController extends Controller
             return response(["message" => "item deleted", "status" => 200]);
         }
 
-        return response(["message" => "unable delete item", "status" => 404]);
+        return response(["message" => "unable delete item", "status" => 404], 404);
     }
 }
