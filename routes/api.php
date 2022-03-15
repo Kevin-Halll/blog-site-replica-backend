@@ -24,7 +24,13 @@ use Illuminate\Auth\Middleware\Authenticate;
 //     return $request->user();
 // });
 
+Route::get("/users", [UserController::class, 'index']);
+Route::get("/user/{id}", [UserController::class, 'show']);
+
 Route::group(["middleware" => ['auth:sanctum']], function(){
     Route::get("/user", [AuthenticatedSessionController::class, 'get']);
     Route::put("/update/{id}", [UserController::class, 'update']);
+    Route::put("/user/deactivate/{id}", [UserController::class, 'deactivate']);
+    Route::put("/user/reactivate/{id}", [UserController::class, 'reactivate']);
+    Route::delete("/user/delete/{id}", [UserController::class, 'destroy']);
 });
