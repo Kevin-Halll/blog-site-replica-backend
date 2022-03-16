@@ -20,15 +20,6 @@ class ReviewController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -71,9 +62,15 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function show(Review $review)
+    public function show(Review $review, $id)
     {
-        //
+        $review = Review::find($id);
+
+        if( $review != null){
+         return [$review, (["message" => "Sucess", "status" => 200])];
+        } 
+
+        return (["message" => "Review not founf", "status" => 404]);
     }
 
     /**
