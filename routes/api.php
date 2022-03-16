@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use GuzzleHttp\Middleware;
 use Illuminate\Auth\Middleware\Authenticate;
@@ -44,4 +45,5 @@ Route::group(["middleware" => ['auth:sanctum']], function(){
     Route::put("/user/deactivate/{id}", [UserController::class, 'deactivate']);
     Route::put("/user/reactivate/{id}", [UserController::class, 'reactivate']);
     Route::delete("/user/delete/{id}", [UserController::class, 'destroy']);
+    Route::post("/review/save", [ReviewController::class, 'store']);
 });

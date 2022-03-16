@@ -27,8 +27,10 @@ return new class extends Migration
             $table->integer('star_rating');
             $table->string('title');
             $table->text('content');
-            $table->boolean('helpful')->nullable(true);
+            $table->integer('helpful_count')->default(0)->nullable(true);
+            $table->integer('not_helpful_count')->default(0)->nullable(true);
             $table->boolean('is_active')->default(true)->nullable(false);
+            $table->softDeletes();
         });
     }
 
