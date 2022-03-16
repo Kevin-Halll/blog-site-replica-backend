@@ -35,15 +35,22 @@ Route::get("/users", [UserController::class, 'index']);
 Route::get("/user/{id}", [UserController::class, 'show']);
 
 Route::group(["middleware" => ['auth:sanctum']], function(){
-    Route::post('/company', [CompanyController::class, 'store']);
-    Route::put('/company/{id}', [CompanyController::class, 'update']);
-    Route::get('/company/{id}/deactivate', [CompanyController::class, 'deactivate']);
-    Route::get('/company/{id}/restore', [CompanyController::class, 'restore']);
-    Route::delete('/company/{id}', [CompanyController::class, 'destroy']);
-    Route::get("/user", [AuthenticatedSessionController::class, 'get']);
-    Route::put("/update/{id}", [UserController::class, 'update']);
-    Route::put("/user/deactivate/{id}", [UserController::class, 'deactivate']);
-    Route::put("/user/reactivate/{id}", [UserController::class, 'reactivate']);
-    Route::delete("/user/delete/{id}", [UserController::class, 'destroy']);
-    Route::post("/review/save", [ReviewController::class, 'store']);
+    Route::name('company')->group(function() {
+        Route::post('/', [CompanyController::class, 'store']);
+        Route::put('/{id}', [CompanyController::class, 'update']);
+        Route::get('/deactivate/{id}', [CompanyController::class, 'deactivate']);
+        Route::get('/restore/{id}', [CompanyController::class, 'restore']);
+        Route::delete('/{id}', [CompanyController::class, 'destroy']);
+    });
+    Route::name('user')->group(function(){
+        Route::get("/user", [AuthenticatedSessionController::class, 'get']);
+        Route::put("/update/{id}", [UserController::class, 'update']);
+        Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
+        Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
+        Route::delete("/{id}", [UserController::class, 'destroy']);
+    });
+    Route::name('review')->group(function(){
+        Route::post("/save", [ReviewController::class, 'store']);
+        Route::post("/show/{id}", [ReviewController::class, 'show']);
+    });
 });
