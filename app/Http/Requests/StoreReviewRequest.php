@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReviewRequest extends FormRequest
@@ -13,7 +14,8 @@ class StoreReviewRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+
+        return true;
     }
 
     /**
@@ -24,7 +26,13 @@ class StoreReviewRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "user_id" => "required|integer",
+            "company_id" => "required|integer",
+            "star_rating" => "required|integer",
+            "title" => "required|string",
+            "content" => "required|string"
         ];
+
+
     }
 }

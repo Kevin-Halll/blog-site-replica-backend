@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
@@ -36,23 +38,31 @@ class ReviewController extends Controller
      */
     public function store(StoreReviewRequest $request)
     {
-        $request->validate([
-            "user_id" => "required|integer",
-            "company_id" => "required|integer",
-            "star_rating" => "required|integer",
-            "title" => "required|string",
-            "content" => "required|text"
-        ]);
 
-        $review = Review::create([
-            "user_id" => $request->user_id,
-            "company-id" => $request->company_id,
-            "star_rating" => $request->star_rating, 
-            "title" => $request->title,
-            "content" => $request->content
-        ]);
+        $reviews = Review::where('user_id', $request->user_id)->where('company_id', $request->company_id)->first();
 
-        return $review;
+        // dd($reviews);
+
+        if( $reviews == null){
+            $review = Review::create([
+                "user_id" => $request->user_id,
+                "company_id" => $request->company_id,
+                "star_rating" => $request->star_rating, 
+                "title" => $request->title,
+                "content" => $request->content
+            ]);
+
+            return [ $review, ["message" => "Review saved successfully", 
+                    "Status" => 500]];
+        }
+        
+        return (["message" => "Review alreay exists"]);
+        
+        // $data = $request->all();
+
+        // Review::where('user_id', $request->user_id);
+
+        
     }
 
     /**
