@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use GuzzleHttp\Middleware;
 use Illuminate\Auth\Middleware\Authenticate;
@@ -34,14 +35,25 @@ Route::get("/users", [UserController::class, 'index']);
 Route::get("/user/{id}", [UserController::class, 'show']);
 
 Route::group(["middleware" => ['auth:sanctum']], function(){
-    Route::post('/company', [CompanyController::class, 'store']);
-    Route::put('/company/{id}', [CompanyController::class, 'update']);
-    Route::get('/company/{id}/deactivate', [CompanyController::class, 'deactivate']);
-    Route::get('/company/{id}/restore', [CompanyController::class, 'restore']);
-    Route::delete('/company/{id}', [CompanyController::class, 'destroy']);
-    Route::get("/user", [AuthenticatedSessionController::class, 'get']);
-    Route::put("/update/{id}", [UserController::class, 'update']);
-    Route::put("/user/deactivate/{id}", [UserController::class, 'deactivate']);
-    Route::put("/user/reactivate/{id}", [UserController::class, 'reactivate']);
-    Route::delete("/user/delete/{id}", [UserController::class, 'destroy']);
+    Route::prefix('company')->group(function() {
+        Route::post('/', [CompanyController::class, 'store']);
+        Route::put('/{id}', [CompanyController::class, 'update']);
+        Route::get('/deactivate/{id}', [CompanyController::class, 'deactivate']);
+        Route::get('/restore/{id}', [CompanyController::class, 'restore']);
+        Route::delete('/{id}', [CompanyController::class, 'destroy']);
+    });
+    Route::prefix('user')->group(function(){
+        Route::get("/user", [AuthenticatedSessionController::class, 'get']);
+        Route::put("/update/{id}", [UserController::class, 'update']);
+        Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
+        Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
+        Route::delete("/{id}", [UserController::class, 'destroy']);
+    });
+    Route::prefix('review')->group(function(){
+        Route::post("/save", [ReviewController::class, 'store']);
+        Route::post("/show/{id}", [ReviewController::class, 'show']);
+        Route::put("/update/{id}", [ReviewController::class, 'update']);
+        Route::delete("/deactivate/{id}", [ReviewController::class, 'delete']);
+        Route::delete("/delete/{id}", [ReviewController::class, 'destroy']);
+    });
 });
