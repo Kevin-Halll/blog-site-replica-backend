@@ -74,26 +74,29 @@ class ReviewController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Review  $review
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Review $review)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateReviewRequest  $request
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateReviewRequest $request, Review $review)
+    public function update(UpdateReviewRequest $request, Review $review, $id)
     {
-        //
+        $review = Review::find($id);
+
+        if( $review != null){
+            // $review->user_id = $review->user_id;
+            // $review->company_id = $review->company_id; 
+            $review->star_rating = $request->star_rating;
+            $review->title = $request->title;
+            $review->content = $request->content;
+
+            $review->save();
+
+            return [$review, (["message" => "success", "status" => 200])];
+        }
+
+        return(["message" => "No review found", "status" => 404]);
     }
 
     /**
