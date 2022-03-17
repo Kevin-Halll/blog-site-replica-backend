@@ -1,16 +1,11 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CompanyAddressController;
 use App\Http\Controllers\UserController;
-use GuzzleHttp\Middleware;
-use Illuminate\Auth\Middleware\Authenticate;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -33,15 +28,25 @@ Route::get('/company/{id}', [CompanyController::class, 'show']);
 Route::get("/users", [UserController::class, 'index']);
 Route::get("/user/{id}", [UserController::class, 'show']);
 
-Route::group(["middleware" => ['auth:sanctum']], function(){
+Route::get("/company-address", [CompanyAddressController::class, 'index']);
+Route::get("/company-address/{companyAddress}", [CompanyAddressController::class, 'show']);
+
+Route::group(["middleware" => ['auth:sanctum']], function () {
     Route::post('/company', [CompanyController::class, 'store']);
     Route::put('/company/{id}', [CompanyController::class, 'update']);
     Route::get('/company/{id}/deactivate', [CompanyController::class, 'deactivate']);
     Route::get('/company/{id}/restore', [CompanyController::class, 'restore']);
     Route::delete('/company/{id}', [CompanyController::class, 'destroy']);
+
     Route::get("/user", [AuthenticatedSessionController::class, 'get']);
     Route::put("/update/{id}", [UserController::class, 'update']);
     Route::put("/user/deactivate/{id}", [UserController::class, 'deactivate']);
     Route::put("/user/reactivate/{id}", [UserController::class, 'reactivate']);
     Route::delete("/user/delete/{id}", [UserController::class, 'destroy']);
+
+    Route::prefix("/company-address")->group(function () {
+        Route::post("/create", [CompanyAddressController::class, 'store']);
+        Route::put("/update/{companyAddress}", [CompanyAddressController::class, 'update']);
+        Route::delete("/delete/{companyAddress}", [CompanyAddressController::class, 'destroy']);
+    });
 });
