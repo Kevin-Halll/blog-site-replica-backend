@@ -53,5 +53,7 @@ Route::group(["middleware" => ['auth:sanctum']], function(){
         Route::post("/save", [ReviewController::class, 'store']);
         Route::post("/show/{id}", [ReviewController::class, 'show']);
         Route::put("/update/{id}", [ReviewController::class, 'update']);
+        Route::delete("/deactivate/{id}", [ReviewController::class, 'delete']);
+        Route::delete("/delete/{id}", [ReviewController::class, 'destroy']);
     });
 });

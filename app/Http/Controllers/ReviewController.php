@@ -105,8 +105,34 @@ class ReviewController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Review $review)
+    public function delete(Review $review, $id)
     {
-        //
+        $review = Review::find($id);
+
+        if( $review != null){
+            $review->delete();
+            return (["success" => "Review deleted", "status" => 200]);
+        }
+
+        return (["Error" => "Review not found", "status" => 404]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Review  $review
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Review $review, $id)
+    {
+        $review = Review::find($id);
+
+        if( $review != null){
+            Review::destroy($id);
+            return(['message' => 'Review deleted succesfully', 
+                    'status' => 200]);
+        } else{
+            return (['message' => 'No review found', 'status' => 404]);
+        }
     }
 }
