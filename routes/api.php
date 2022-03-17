@@ -1,17 +1,13 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\CompanyAddressController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
-use GuzzleHttp\Middleware;
-use Illuminate\Auth\Middleware\Authenticate;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +30,9 @@ Route::get('/company/{id}', [CompanyController::class, 'show']);
 Route::get("/users", [UserController::class, 'index']);
 Route::get("/user/{id}", [UserController::class, 'show']);
 
+Route::get("/company-address", [CompanyAddressController::class, 'index']);
+Route::get("/company-address/{companyAddress}", [CompanyAddressController::class, 'show']);
+
 Route::group(["middleware" => ['auth:sanctum']], function(){
     Route::prefix('company')->group(function() {
         Route::post('/', [CompanyController::class, 'store']);
@@ -55,5 +54,10 @@ Route::group(["middleware" => ['auth:sanctum']], function(){
         Route::put("/update/{id}", [ReviewController::class, 'update']);
         Route::delete("/deactivate/{id}", [ReviewController::class, 'delete']);
         Route::delete("/delete/{id}", [ReviewController::class, 'destroy']);
+    });
+    Route::prefix("/company-address")->group(function () {
+        Route::post("/create", [CompanyAddressController::class, 'store']);
+        Route::put("/update/{companyAddress}", [CompanyAddressController::class, 'update']);
+        Route::delete("/delete/{companyAddress}", [CompanyAddressController::class, 'destroy']);
     });
 });
