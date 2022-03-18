@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\CompanyAddress;
+use App\Models\UserAddress;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CompanyAddressSeeder extends Seeder
+class UserAddressSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class CompanyAddressSeeder extends Seeder
      */
     public function run()
     {
-        CompanyAddress::factory(10)->create();
+        UserAddress::factory(10)->create();
     }
 }

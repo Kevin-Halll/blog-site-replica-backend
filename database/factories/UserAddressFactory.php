@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use \Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompanyAddress>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserAddress>
  */
-class CompanyAddressFactory extends Factory
+class UserAddressFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +19,7 @@ class CompanyAddressFactory extends Factory
     public function definition()
     {
         return [
-            "company_id" => $this->faker->randomElement(DB::table('companies')->pluck('id')),
+            "user_id" => $this->faker->randomElement(DB::table('users')->pluck('id')),
             "address_line_1" => $this->faker->address(),
             "address_line_2" => $this->faker->streetAddress(),
             "city" => $this->faker->city(),

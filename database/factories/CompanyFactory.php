@@ -19,7 +19,7 @@ class CompanyFactory extends Factory
         return [
             'is_claimed' => 0,
             'name' => $this->faker->company(),
-            'description' => $this->faker->text(200),
+            'description' => $this->faker->text(),
             'email' => $this->faker->unique()->companyEmail(),
             'phone' => $this->faker->phoneNumber(),
             'website' => $this->faker->url(),
