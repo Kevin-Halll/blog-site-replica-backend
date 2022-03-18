@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyAddressController;
 // use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
 use GuzzleHttp\Middleware;
 
@@ -36,33 +37,36 @@ Route::get("/user/{id}", [UserController::class, 'show']);
 
 Route::get("/user/review/{id}", [UserController::class, 'reviews']);
 Route::get("/company/review/{id}", [CompanyController::class, 'reviews']);
-Route::get("/company-address", [CompanyAddressController::class, 'index']);
-Route::get("/company-address/{companyAddress}", [CompanyAddressController::class, 'show']);
 
-Route::group(["middleware" => ['auth:sanctum']], function(){
-    Route::prefix('company')->group(function() {
-        Route::post('/', [CompanyController::class, 'store']);
-        Route::put('/{id}', [CompanyController::class, 'update']);
-        Route::get('/deactivate/{id}', [CompanyController::class, 'deactivate']);
-        Route::get('/restore/{id}', [CompanyController::class, 'restore']);
-        Route::delete('/{id}', [CompanyController::class, 'destroy']);
+Route::get("/company/address", [CompanyAddressController::class, 'index']);
+Route::get("/company/address/{companyAddress}", [CompanyAddressController::class, 'show']);
+
+Route::get("/user/address", [UserAddressController::class, 'index']);
+Route::get("/user/address/{userAddress}", [UserAddressController::class, 'show']);
+
+Route::group(["middleware" => ['auth:sanctum']], function () {
+    Route::prefix('company')->group(function () {
+        Route::post('/create', [CompanyController::class, 'store']);
+        Route::put('/update/{id}', [CompanyController::class, 'update']);
+        Route::put('/deactivate/{id}', [CompanyController::class, 'deactivate']);
+        Route::put('/restore/{id}', [CompanyController::class, 'restore']);
+        Route::delete('/delete{id}', [CompanyController::class, 'destroy']);
     });
-    Route::prefix('user')->group(function(){
-        // Route::get("/", [AuthenticatedSessionController::class, 'get']);
-        
+    Route::prefix('user')->group(function () {
+        Route::get("/", [AuthenticatedSessionController::class, 'get']);
+        Route::put("/update/{id}", [UserController::class, 'update']);
         Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
         Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
         Route::delete("/{id}", [UserController::class, 'destroy']);
-
     });
-    Route::prefix('review')->group(function(){
+    Route::prefix('review')->group(function () {
         Route::post("/save", [ReviewController::class, 'store']);
         Route::post("/show/{id}", [ReviewController::class, 'show']);
         Route::put("/update/{id}", [ReviewController::class, 'update']);
         Route::delete("/deactivate/{id}", [ReviewController::class, 'delete']);
         Route::delete("/delete/{id}", [ReviewController::class, 'destroy']);
     });
-    Route::prefix("/company-address")->group(function () {
+    Route::prefix("company/address")->group(function () {
         Route::post("/create", [CompanyAddressController::class, 'store']);
         Route::put("/update/{companyAddress}", [CompanyAddressController::class, 'update']);
         Route::delete("/delete/{companyAddress}", [CompanyAddressController::class, 'destroy']);

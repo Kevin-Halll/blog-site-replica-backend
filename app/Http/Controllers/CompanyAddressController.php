@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CompanyAddress;
 use App\Http\Requests\StoreCompanyAddressRequest;
 use App\Http\Requests\UpdateCompanyAddressRequest;
+use App\Models\Company;
 
 class CompanyAddressController extends Controller
 {
@@ -26,15 +27,9 @@ class CompanyAddressController extends Controller
      */
     public function store(StoreCompanyAddressRequest $request)
     {
-        $requestValues = [
-            "company_id" => $request->company_id,
-            "address_line_1" => $request->address_line_1,
-            "address_line_2" => $request->address_line_2,
-            "parish" => $request->parish,
-            "city" => $request->city,
-        ];
-
-        return success(CompanyAddress::create($requestValues));
+        if (Company::find($request->id)) {
+            return success(CompanyAddress::create($request->validated()));
+        }
     }
 
     /**
