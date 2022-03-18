@@ -70,7 +70,7 @@ class ReviewController extends Controller
          return [$review, (["message" => "Sucess", "status" => 200])];
         } 
 
-        return (["message" => "Review not founf", "status" => 404]);
+        return (["message" => "Review not found", "status" => 404]);
     }
 
     /**

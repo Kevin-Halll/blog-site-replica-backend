@@ -17,4 +17,4 @@ Route::get('/', function () {
     return ['Blast' => app()->version()];
 });
 
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
