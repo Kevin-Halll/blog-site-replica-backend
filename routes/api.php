@@ -8,6 +8,7 @@ use App\Http\Controllers\CompanyAddressController;
 // use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
+use GuzzleHttp\Middleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::get('/company', [CompanyController::class, 'index']);
 Route::get('/company/{id}', [CompanyController::class, 'show']);
 
 Route::get('/u/{id}', [UserController::class, 'show'])->middleware('auth:api');
+Route::put("/update/{id}", [UserController::class, 'update'])->middleware('auth:api');
 
 Route::get("/users", [UserController::class, 'index']);
 Route::get("/user/{id}", [UserController::class, 'show']);
@@ -47,7 +49,7 @@ Route::group(["middleware" => ['auth:sanctum']], function(){
     });
     Route::prefix('user')->group(function(){
         // Route::get("/", [AuthenticatedSessionController::class, 'get']);
-        Route::put("/update/{id}", [UserController::class, 'update']);
+        
         Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
         Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
         Route::delete("/{id}", [UserController::class, 'destroy']);

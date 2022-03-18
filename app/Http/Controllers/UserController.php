@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -23,17 +24,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
 
-        $user = User::find($id);
+        return Auth::user();
 
-        if($user != null){
-            return $user;
-        } else {
-            return ([ 'message' => 'user id not found', 
-                        'status' => 404]);
-        }
+        // // dd($request);
+        // $token = explode(" ", $request->server('HTTP_AUTHORIZATION'))[1];
+
+        
+        // dd($token);
+        // $user = User::find($id);
+
+
+
+        // if($user != null){
+        //     return $user;
+        // } else {
+        //     return ([ 'message' => 'user id not found', 
+        //                 'status' => 404]);
+        // }
     }
     /**
      * Update the specified resource in storage.
