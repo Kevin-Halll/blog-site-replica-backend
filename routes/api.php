@@ -3,9 +3,9 @@
 use App\Http\Controllers\CompanyController;
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+// use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CompanyAddressController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+// use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 
@@ -27,6 +27,8 @@ use App\Http\Controllers\UserController;
 Route::get('/company', [CompanyController::class, 'index']);
 Route::get('/company/{id}', [CompanyController::class, 'show']);
 
+Route::get('/u/{id}', [UserController::class, 'show'])->middleware('auth:api');
+
 Route::get("/users", [UserController::class, 'index']);
 Route::get("/user/{id}", [UserController::class, 'show']);
 
@@ -44,7 +46,7 @@ Route::group(["middleware" => ['auth:sanctum']], function(){
         Route::delete('/{id}', [CompanyController::class, 'destroy']);
     });
     Route::prefix('user')->group(function(){
-        Route::get("/", [AuthenticatedSessionController::class, 'get']);
+        // Route::get("/", [AuthenticatedSessionController::class, 'get']);
         Route::put("/update/{id}", [UserController::class, 'update']);
         Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
         Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
