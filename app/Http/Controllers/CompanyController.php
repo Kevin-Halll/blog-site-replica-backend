@@ -14,8 +14,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $isActived = 1;
-        return success( Company::where("is_active", $isActived)->get());
+        return success(Company::where("is_active", 1)->get());
     }
 
     /**
@@ -51,7 +50,7 @@ class CompanyController extends Controller
         ]);
 
 
-        return $company;
+        return success($$company);
     }
 
     /**
@@ -62,7 +61,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        return Company::find($id);
+        return success(Company::find($id));
     }
 
     /**
@@ -78,13 +77,12 @@ class CompanyController extends Controller
 
         try {
             $company->update($request->all());
-            return response(['message' => 'item updated', 'status' => 200]);
+            return success();
         } catch (\Throwable $err) {
             if ($err->getMessage() == "Call to a member function update() on null") {
-                return response(["message" => "Item with id {$id} not found", 'status' => 404], 404);
+                return error("Item with id {$id} not found");
             }
-
-            return response(['message' => 'we are experiencing some issues on our side', 'status' => 500, 'error' => $err->getMessage()], 500);
+            return error($err->getMessage());
         }
     }
 
@@ -160,10 +158,11 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function reviews($id){
+    public function reviews($id)
+    {
         $company_reviews = Company::find($id)->reviews;
-        
-        if( $company_reviews != null){
+
+        if ($company_reviews != null) {
             return [$company_reviews, (["Message" => "Success", "status" => 200])];
         }
 

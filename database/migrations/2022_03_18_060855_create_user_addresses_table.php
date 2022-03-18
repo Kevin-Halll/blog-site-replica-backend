@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Company;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +12,9 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('company_addresses', function (Blueprint $table) {
+        Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->text('address_line_1')->nullable();
             $table->text('address_line_2')->nullable();
             $table->string('parish')->nullable();
@@ -31,6 +30,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('company_addresses');
+        Schema::dropIfExists('user_addresses');
     }
 };
