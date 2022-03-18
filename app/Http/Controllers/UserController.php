@@ -123,7 +123,8 @@ class UserController extends Controller
         $user_reviews = User::find($id)->reviews;
         
         if( $user_reviews != null){
-            return [$user_reviews, (["Message" => "Success", "status" => 200])];
+            // return [$user_reviews, (["Message" => "Success", "status" => 200])];
+            return success($user_reviews);
         }
 
         return (["message" => "User not found", "status" => 404]);

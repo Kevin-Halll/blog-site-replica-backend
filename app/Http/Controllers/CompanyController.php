@@ -15,7 +15,7 @@ class CompanyController extends Controller
     public function index()
     {
         $isActived = 1;
-        return Company::where("is_active", $isActived)->get();
+        return success( Company::where("is_active", $isActived)->get());
     }
 
     /**

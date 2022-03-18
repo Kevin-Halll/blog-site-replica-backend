@@ -17,13 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')
                     ->constrained('users')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                    ->onUpdate('cascade');
             $table->timestamps();
             $table->foreignId('company_id')
                     ->constrained('companies')
-                    ->onUpdate('cascade')
-                    ->onDelete('cascade');
+                    ->onUpdate('cascade');
             $table->integer('star_rating');
             $table->string('title');
             $table->text('content');
