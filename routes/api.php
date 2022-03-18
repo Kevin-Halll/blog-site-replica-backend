@@ -34,6 +34,9 @@ Route::get('/company/{id}', [CompanyController::class, 'show']);
 Route::get("/users", [UserController::class, 'index']);
 Route::get("/user/{id}", [UserController::class, 'show']);
 
+Route::get("/user/review/{id}", [UserController::class, 'reviews']);
+Route::get("/company/review/{id}", [CompanyController::class, 'reviews']);
+
 Route::group(["middleware" => ['auth:sanctum']], function(){
     Route::prefix('company')->group(function() {
         Route::post('/', [CompanyController::class, 'store']);
@@ -43,11 +46,12 @@ Route::group(["middleware" => ['auth:sanctum']], function(){
         Route::delete('/{id}', [CompanyController::class, 'destroy']);
     });
     Route::prefix('user')->group(function(){
-        Route::get("/user", [AuthenticatedSessionController::class, 'get']);
+        Route::get("/", [AuthenticatedSessionController::class, 'get']);
         Route::put("/update/{id}", [UserController::class, 'update']);
         Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
         Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
         Route::delete("/{id}", [UserController::class, 'destroy']);
+
     });
     Route::prefix('review')->group(function(){
         Route::post("/save", [ReviewController::class, 'store']);

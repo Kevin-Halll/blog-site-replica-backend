@@ -24,4 +24,8 @@ class Company extends Model
         "amenities",
         "tags",
     ];
+
+    public function reviews(){
+        return $this->hasMany(Review::class);
+    }
 }

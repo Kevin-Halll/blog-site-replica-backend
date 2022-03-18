@@ -112,4 +112,21 @@ class UserController extends Controller
             return (['message' => 'No user found', 'status' => 404]);
         }
     }
+
+    /**
+     * Return a list of reviews for a particular member
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reviews( $id)
+    {
+        $user_reviews = User::find($id)->reviews;
+        
+        if( $user_reviews != null){
+            return [$user_reviews, (["Message" => "Success", "status" => 200])];
+        }
+
+        return (["message" => "User not found", "status" => 404]);
+        
+    }
 }

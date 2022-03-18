@@ -154,4 +154,19 @@ class CompanyController extends Controller
 
         return response(["message" => "unable delete item", "status" => 404], 404);
     }
+
+    /**
+     * Return a list of reviews for a particular index
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function reviews($id){
+        $company_reviews = Company::find($id)->reviews;
+        
+        if( $company_reviews != null){
+            return [$company_reviews, (["Message" => "Success", "status" => 200])];
+        }
+
+        return (["Message" => "Company not found", "status" => 404]);
+    }
 }
