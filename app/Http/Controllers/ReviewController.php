@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
-use App\Models\User;
-use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
@@ -29,31 +27,27 @@ class ReviewController extends Controller
      */
     public function store(StoreReviewRequest $request)
     {
-
         $reviews = Review::where('user_id', $request->user_id)->where('company_id', $request->company_id)->first();
 
         // dd($reviews);
 
-        if( $reviews == null){
+        if ($reviews == null) {
             $review = Review::create([
                 "user_id" => $request->user_id,
                 "company_id" => $request->company_id,
-                "star_rating" => $request->star_rating, 
+                "star_rating" => $request->star_rating,
                 "title" => $request->title,
                 "content" => $request->content
             ]);
 
-            return [ $review, ["message" => "Review saved successfully", 
-                    "Status" => 500]];
+            return success($review);
         }
-        
-        return (["message" => "Review alreay exists"]);
-        
+
+        return error("Review alreay exists");
+
         // $data = $request->all();
 
         // Review::where('user_id', $request->user_id);
-
-        
     }
 
     /**
@@ -66,11 +60,11 @@ class ReviewController extends Controller
     {
         $review = Review::find($id);
 
-        if( $review != null){
-         return [$review, (["message" => "Sucess", "status" => 200])];
-        } 
+        if ($review != null) {
+            return success($review);
+        }
 
-        return (["message" => "Review not found", "status" => 404]);
+        return error("Review not found");
     }
 
     /**
@@ -84,19 +78,19 @@ class ReviewController extends Controller
     {
         $review = Review::find($id);
 
-        if( $review != null){
+        if ($review != null) {
             // $review->user_id = $review->user_id;
-            // $review->company_id = $review->company_id; 
+            // $review->company_id = $review->company_id;
             $review->star_rating = $request->star_rating;
             $review->title = $request->title;
             $review->content = $request->content;
 
             $review->save();
 
-            return [$review, (["message" => "success", "status" => 200])];
+            return success($review);
         }
 
-        return(["message" => "No review found", "status" => 404]);
+        return error("No review found");
     }
 
     /**
@@ -109,12 +103,12 @@ class ReviewController extends Controller
     {
         $review = Review::find($id);
 
-        if( $review != null){
+        if ($review != null) {
             $review->delete();
-            return (["success" => "Review deleted", "status" => 200]);
+            return success([], "Review deleted");
         }
 
-        return (["Error" => "Review not found", "status" => 404]);
+        return error("Review not found");
     }
 
     /**
@@ -127,12 +121,11 @@ class ReviewController extends Controller
     {
         $review = Review::find($id);
 
-        if( $review != null){
+        if ($review != null) {
             Review::destroy($id);
-            return(['message' => 'Review deleted succesfully', 
-                    'status' => 200]);
-        } else{
-            return (['message' => 'No review found', 'status' => 404]);
+            return success([], "Review deleted succesfully");
+        } else {
+            return error("No review found");
         }
     }
 }
