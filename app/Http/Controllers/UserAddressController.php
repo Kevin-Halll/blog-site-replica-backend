@@ -26,7 +26,7 @@ class UserAddressController extends Controller
      */
     public function store(StoreUserAddressRequest $request)
     {
-        //
+        return success(UserAddress::create($request->validated()));
     }
 
     /**
@@ -37,7 +37,7 @@ class UserAddressController extends Controller
      */
     public function show(UserAddress $userAddress)
     {
-        //
+        return success(UserAddress::find($userAddress->getKey()));
     }
 
     /**
@@ -49,7 +49,8 @@ class UserAddressController extends Controller
      */
     public function update(UpdateUserAddressRequest $request, UserAddress $userAddress)
     {
-        //
+        $userAddress = UserAddress::find($userAddress->getKey());
+        return success($userAddress::update($request->validated()));
     }
 
     /**
@@ -60,6 +61,7 @@ class UserAddressController extends Controller
      */
     public function destroy(UserAddress $userAddress)
     {
-        //
+        $deleted = UserAddress::destroy($userAddress->getKey());
+        return $deleted ? success([], "Item with id {$userAddress->getKey()} deleted") : error([], "Unable to delete item");
     }
 }

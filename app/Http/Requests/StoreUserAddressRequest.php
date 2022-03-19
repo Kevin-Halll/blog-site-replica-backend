@@ -24,7 +24,11 @@ class StoreUserAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "user_id" => "required|string",
+            "address_line_1" => "string",
+            "address_line_2" => "string",
+            "city" => "string",
+            "parish" => "string"
         ];
     }
 }
