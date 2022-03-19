@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCompanyRequest;
+use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
-use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -23,34 +24,10 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCompanyRequest $request)
     {
-        $request->validate([
-            "name" => "required|string",
-            "description" => "required|string",
-            "email" => "required|string",
-            "phone" => "required|string",
-            "website" => "string|url",
-            "menu_url" => "string|url",
-            "category_ids" => "string",
-            "amenities" => "string",
-            "tags" => "string",
-        ]);
-
-        $company = Company::create([
-            "name" => $request->name,
-            "description" => $request->description,
-            "email" => $request->email,
-            "phone" => $request->phone,
-            "website" => $request->website,
-            "menu_url" => $request->menu_url,
-            "category_ids" => $request->categor_ids,
-            "amenities" => $request->amenities,
-            "tags" => str($request->tags)->upper(),
-        ]);
-
-
-        return success($$company);
+        $company = Company::create($request->validated());
+        return success($company);
     }
 
     /**
@@ -59,9 +36,9 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Company $company)
     {
-        return success(Company::find($id));
+        return success(Company::find($company->getKey()));
     }
 
     /**
@@ -71,16 +48,16 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCompanyRequest $request, Company $company)
     {
-        $company = Company::find($id);
+        $company = Company::find($company->getKey());
 
         try {
-            $company->update($request->all());
-            return success();
+            $updatedCompany = $company->update($request->validated());
+            return success($updatedCompany);
         } catch (\Throwable $err) {
             if ($err->getMessage() == "Call to a member function update() on null") {
-                return error("Item with id {$id} not found");
+                return error("Item not found");
             }
             return error($err->getMessage());
         }
@@ -92,12 +69,12 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore(Company $company)
     {
-        $company = Company::find($id);
+        $company = Company::find($company->getKey());
 
         if ($company->is_active == 1) {
-            return response(["message" => "item is already restored", "status" => 304], 304);
+            return success([], "Item already restored");
         }
 
         // Activate Company
@@ -105,9 +82,9 @@ class CompanyController extends Controller
 
         try {
             $company->save();
-            return response(["message" => "item restored", "status" => 200]);
+            return success();
         } catch (\Throwable $error) {
-            return response(["message" => "unable to restore item", "status" => 500, 'error' => $error->getMessage()], 500);
+            return error($error->getMessage(), "unable to restore item");
         }
     }
 
@@ -117,12 +94,12 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function deactivate($id)
+    public function deactivate(Company $company)
     {
-        $company = Company::find($id);
+        $company = Company::find($company->getKey());
 
         if ($company->is_active == 0) {
-            return response(["message" => "item is already deactivated", "status" => 304], 304);
+            return success([], "item is already deactivated");
         }
 
         // Deactivate Company
@@ -130,9 +107,9 @@ class CompanyController extends Controller
 
         try {
             $company->save();
-            return response(["message" => "item deactivated", "status" => 200]);
+            return success([], "item deactivated");
         } catch (\Throwable $error) {
-            return response(["message" => "unable to deactivate item", "status" => 500, 'error' => $error->getMessage()], 500);
+            return error($error->getMessage(), "unable to deactivate item");
         }
     }
 
@@ -142,15 +119,15 @@ class CompanyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id = null)
+    public function destroy(Company $company)
     {
-        $successfull = Company::destroy($id);
+        $successfull = Company::destroy($company->getKey());
 
         if ($successfull) {
-            return response(["message" => "item deleted", "status" => 200]);
+            return success([], "item deleted");
         }
 
-        return response(["message" => "unable delete item", "status" => 404], 404);
+        return error([], "unable delete item");
     }
 
     /**
@@ -158,14 +135,30 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function reviews($id)
+    public function reviews(Company $company)
     {
-        $company_reviews = Company::find($id)->reviews;
+        $company_reviews = Company::find($company->getKey())->reviews;
 
         if ($company_reviews != null) {
-            return [$company_reviews, (["Message" => "Success", "status" => 200])];
+            return success($company_reviews);
         }
 
-        return (["Message" => "Company not found", "status" => 404]);
+        return error([], "Company not found");
+    }
+
+    /**
+     * Return the address for a particular index
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function address(Company $company)
+    {
+        $company_address = Company::find($company->getKey())->address;
+
+        if ($company_address != null) {
+            return success($company_address);
+        }
+
+        return error([], "Company not found");
     }
 }

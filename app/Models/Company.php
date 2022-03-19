@@ -25,7 +25,13 @@ class Company extends Model
         "tags",
     ];
 
-    public function reviews(){
+    public function reviews()
+    {
         return $this->hasMany(Review::class);
+    }
+
+    public function address()
+    {
+        return $this->hasOne(CompanyAddress::class);
     }
 }
