@@ -41,7 +41,7 @@ Route::get("/company/address/{companyAddress}", [CompanyAddressController::class
 Route::get("/user/address", [UserAddressController::class, 'index']);
 Route::get("/user/address/{userAddress}", [UserAddressController::class, 'show']);
 
-Route::group(["middleware" => ['auth:sanctum']], function () {
+Route::group(["middleware" => ['auth:api']], function () {
     Route::prefix('company')->group(function () {
         Route::post('/create', [CompanyController::class, 'store']);
         Route::put('/update/{company}', [CompanyController::class, 'update']);
