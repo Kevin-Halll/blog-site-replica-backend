@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\CompanyController;
 
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,9 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // });
 
+Route::post('/register', [ApiAuthController::class, 'register']);
+Route::post('/login', [ApiAuthController::class, 'login']);
+
 Route::get('/company', [CompanyController::class, 'index']);
 Route::get('/company/{company}', [CompanyController::class, 'show']);
 
@@ -42,6 +46,8 @@ Route::get("/user/address", [UserAddressController::class, 'index']);
 Route::get("/user/address/{userAddress}", [UserAddressController::class, 'show']);
 
 Route::group(["middleware" => ['auth:api']], function () {
+    Route::post('/logout', [ApiAuthController::class, 'logout']);
+
     Route::prefix('company')->group(function () {
         Route::post('/create', [CompanyController::class, 'store']);
         Route::put('/update/{company}', [CompanyController::class, 'update']);
