@@ -9,6 +9,7 @@ use App\Http\Controllers\CompanyAddressController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
+use App\Models\UserPhoto;
 use GuzzleHttp\Middleware;
 
 /*
@@ -43,8 +44,9 @@ Route::get("/company/address/{companyAddress}", [CompanyAddressController::class
 
 Route::get("/user/address", [UserAddressController::class, 'index']);
 Route::get("/user/address/{userAddress}", [UserAddressController::class, 'show']);
+Route::Post('photo/upload', [UserPhoto::class, 'store']);
 
-Route::group(["middleware" => ['auth:sanctum']], function () {
+Route::group(["middleware" => ['auth:api']], function () {
     Route::prefix('company')->group(function () {
         Route::post('/create', [CompanyController::class, 'store']);
         Route::put('/update/{id}', [CompanyController::class, 'update']);
@@ -53,11 +55,12 @@ Route::group(["middleware" => ['auth:sanctum']], function () {
         Route::delete('/delete{id}', [CompanyController::class, 'destroy']);
     });
     Route::prefix('user')->group(function () {
-        Route::get("/", [AuthenticatedSessionController::class, 'get']);
+        // Route::get("/", [AuthenticatedSessionController::class, 'get']);
         Route::put("/update/{id}", [UserController::class, 'update']);
         Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
         Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
         Route::delete("/{id}", [UserController::class, 'destroy']);
+        // Route::Post('photo/upload', [UserPhoto::class, 'store']);
     });
     Route::prefix('review')->group(function () {
         Route::post("/save", [ReviewController::class, 'store']);

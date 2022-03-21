@@ -36,7 +36,15 @@ class UserPhotoController extends Controller
      */
     public function store(StoreUserPhotoRequest $request)
     {
-        //
+        if(!$request->hasFile('fileName')){
+            return error([], "File Upload not Found");
+        }
+
+        foreach($request->file('fileName') as $image){
+            $name = $image->getClientOriginalName();
+            $image->move(public_path().'/imgs/user/', $name);
+            dd($image);
+        }
     }
 
     /**

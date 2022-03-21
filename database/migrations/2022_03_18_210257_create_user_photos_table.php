@@ -15,6 +15,12 @@ return new class extends Migration
     {
         Schema::create('user_photos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onUpdate('cascade');
+            $table->string('photo_url');
+            $table->string('caption')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
