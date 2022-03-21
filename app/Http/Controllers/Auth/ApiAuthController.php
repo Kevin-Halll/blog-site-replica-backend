@@ -15,8 +15,6 @@ class ApiAuthController extends Controller
 {
     public function register (RegisterRequest $request) {
         
-        $request['password']=Hash::make($request['password']);
-        $request['remember_token'] = Str::random(10);
         $user = User::create([
             "first_name" => $request->first_name,
             "last_name" => $request->last_name,
@@ -37,7 +35,6 @@ class ApiAuthController extends Controller
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                $response = ['token' => $token];
                 return success($token, "Logged in Successfully", 200);
             } else {
                 // $response = ["message" => "Password mismatch"];
