@@ -56,14 +56,14 @@ Route::group(["middleware" => ['auth:api']], function () {
         Route::delete('/delete{company}', [CompanyController::class, 'destroy']);
     });
     Route::prefix('user')->group(function () {
-        Route::get("/", [AuthenticatedSessionController::class, 'get']);
+        Route::get("/", [UserController::class, 'show']);
         Route::put("/update/{id}", [UserController::class, 'update']);
         Route::put("/deactivate/{id}", [UserController::class, 'deactivate']);
         Route::put("/reactivate/{id}", [UserController::class, 'reactivate']);
         Route::delete("/{id}", [UserController::class, 'destroy']);
     });
     Route::prefix('review')->group(function () {
-        Route::post("/save", [ReviewController::class, 'store']);
+        Route::post("/create", [ReviewController::class, 'store']);
         Route::post("/show/{id}", [ReviewController::class, 'show']);
         Route::put("/update/{id}", [ReviewController::class, 'update']);
         Route::delete("/deactivate/{id}", [ReviewController::class, 'delete']);
