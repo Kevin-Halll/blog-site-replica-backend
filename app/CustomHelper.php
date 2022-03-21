@@ -1,11 +1,11 @@
 <?php
 
-function success($data = [], $message = "success", $status = "ok")
+function success($data = [], $message = "success", $status = 200)
 {
-    return response()->json(["message" => $message, "status" => $status, "data" => $data]);
+    return response(["message" => $message, "status" => $status, "data" => $data], $status);
 }
 
-function error($error = [], $message = "oops something went wrong", $status = "error")
+function error($error = [], $message = "oops something went wrong", $status = 404)
 {
-    return response()->json(["message" => $message, "status" => $status, "error" => $error]);
+    return response(["message" => $message, "status" => $status, "error" => $error], $status);
 }
