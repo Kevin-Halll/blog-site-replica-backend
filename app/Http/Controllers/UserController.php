@@ -26,14 +26,8 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-
         return Auth::user();
 
-        // // dd($request);
-        // $token = explode(" ", $request->server('HTTP_AUTHORIZATION'))[1];
-
-        
-        // dd($token);
         // $user = User::find($id);
 
 
@@ -41,7 +35,7 @@ class UserController extends Controller
         // if($user != null){
         //     return $user;
         // } else {
-        //     return ([ 'message' => 'user id not found', 
+        //     return ([ 'message' => 'user id not found',
         //                 'status' => 404]);
         // }
     }
@@ -55,8 +49,8 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-            
-        if($user != null){
+
+        if ($user != null) {
             $user->update($request->all());
             return([ 'message' => 'User Updated successfully',
                         'status' => 200]);
@@ -76,32 +70,32 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if( $user->is_active == 0){
-            return (['message' => 'User is already de-activated', 
+        if ($user->is_active == 0) {
+            return (['message' => 'User is already de-activated',
                 'status' => 304]);
-        } else{
+        } else {
             $user->is_active = 0;
             $user->save();
 
-            return (['message' => 'user de-activated successfully', 
+            return (['message' => 'user de-activated successfully',
                     'status' => 200]);
-        }   
+        }
     }
 
     public function reactivate($id)
     {
         $user = User::find($id);
 
-        if( $user->is_active == 1){
-            return (['message' => 'User is already active', 
+        if ($user->is_active == 1) {
+            return (['message' => 'User is already active',
                 'status' => 304]);
-        } else{
+        } else {
             $user->is_active = 1;
             $user->save();
 
-            return (['message' => 'user re-activated successfully', 
+            return (['message' => 'user re-activated successfully',
                     'status' => 200]);
-        }   
+        }
     }
 
     /**
@@ -114,11 +108,11 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if( $user != null){
+        if ($user != null) {
             User::destroy($id);
-            return(['message' => 'User deleted succesfully', 
+            return(['message' => 'User deleted succesfully',
                     'status' => 304]);
-        } else{
+        } else {
             return (['message' => 'No user found', 'status' => 404]);
         }
     }
@@ -128,16 +122,15 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function reviews( $id)
+    public function reviews($id)
     {
         $user_reviews = User::find($id)->reviews;
-        
-        if( $user_reviews != null){
+
+        if ($user_reviews != null) {
             // return [$user_reviews, (["Message" => "Success", "status" => 200])];
             return success($user_reviews);
         }
 
         return (["message" => "User not found", "status" => 404]);
-        
     }
 }
