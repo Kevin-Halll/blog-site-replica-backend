@@ -23,8 +23,8 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'phone' => $this->faker->phoneNumber(),
+            'dob' => $this->faker->date(),
             'password' => '$2y$10$.OHwoWsxnSsG1uHMHX83x.LRQRWGws1MigorDgMFzMJk6XGYE1q9K', // password
-            'is_active' => 1,
             'remember_token' => Str::random(10),
         ];
     }

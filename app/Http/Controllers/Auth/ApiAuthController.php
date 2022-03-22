@@ -19,7 +19,10 @@ class ApiAuthController extends Controller
             "last_name" => $request->last_name,
             "email" => $request->email,
             "phone" => $request->phone,
-            "first_name" => $request->first_name,
+            // "address" => $request->address,
+            // "city" => $request->city,
+            // "parish" => $request->parish,
+            "dob" => $request->dob,
             "password" => Hash::make($request->password),
             "remember_token" => Str::random(10)
         ]);
