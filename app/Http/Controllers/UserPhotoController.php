@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UserPhoto;
 use App\Http\Requests\StoreUserPhotoRequest;
 use App\Http\Requests\UpdateUserPhotoRequest;
+use Illuminate\Support\Facades\Storage;
 
 class UserPhotoController extends Controller
 {
@@ -36,14 +37,44 @@ class UserPhotoController extends Controller
      */
     public function store(StoreUserPhotoRequest $request)
     {
-        if(!$request->hasFile('fileName')){
-            return error([], "File Upload not Found");
-        }
 
-        foreach($request->file('fileName') as $image){
-            $name = $image->getClientOriginalName();
-            $image->move(public_path().'/imgs/user/', $name);
-            dd($image);
+        if ($file = $request->file('file')) {
+            $path = $file->store('public/images/user');
+
+            $img = UserPhoto::where('user_id', $request->user_id)->first();
+
+            if( $img == null){
+                //store  file into directory and db
+                $save = new UserPhoto();
+                $save->user_id = $request->user_id;
+                $save->file_path= $path;
+                $save->caption = $request->caption;
+                $save->save();
+                
+                return response()->json([
+                    "success" => true,
+                    "message" => "File successfully uploaded",
+                    "file" => $file
+                ]);
+            }
+
+            //delete current photo
+            Storage::delete($img->file_path);
+            $img->delete();
+  
+            //store  file into directory and db
+            $save = new UserPhoto();
+            $save->user_id = $request->user_id;
+            $save->file_path= $path;
+            $save->caption = $request->caption;
+            $save->save();
+               
+            return response()->json([
+                "success" => true,
+                "message" => "File successfully uploaded",
+                "file" => $file
+            ]);
+   
         }
     }
 
@@ -87,8 +118,18 @@ class UserPhotoController extends Controller
      * @param  \App\Models\UserPhoto  $userPhoto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserPhoto $userPhoto)
+    public function destroy(UserPhoto $request, $id)
     {
-        //
+        $img = UserPhoto::find($id);
+        $file_path = $img->file_path;
+        // dd($file_path);
+        
+        if( $img != null){
+            Storage::delete($img->file_path);
+            $img->delete();
+            return success([], "image deleted successfully", 200);
+        }
+        return error([], "Image not found", 404);
+
     }
 }

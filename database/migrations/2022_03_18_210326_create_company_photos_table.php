@@ -25,7 +25,7 @@ return new class extends Migration
                 ->constrained('reviews')
                 ->onUpdate('cascade')
                 ->nullable();
-            $table->string('photo_url');
+            $table->string('file_path');
             $table->string('caption')->nullable();
             $table->string('tags')->nullable();
             $table->string('category')->nullalble();

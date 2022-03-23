@@ -9,7 +9,8 @@ use App\Http\Controllers\CompanyAddressController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
-use App\Models\UserPhoto;
+use App\Http\Controllers\UserPhotoController;
+// use App\Models\UserPhoto;
 use GuzzleHttp\Middleware;
 
 /*
@@ -29,6 +30,9 @@ use GuzzleHttp\Middleware;
 
 Route::get('/company', [CompanyController::class, 'index']);
 Route::get('/company/{id}', [CompanyController::class, 'show']);
+Route::post('/upload/user', [UserPhotoController::class, 'store']);
+Route::delete('photos/delete/{id}', [UserPhotoController::class, 'destroy']);
+
 
 Route::get('/u/{id}', [UserController::class, 'show'])->middleware('auth:api');
 Route::put("/update/{id}", [UserController::class, 'update'])->middleware('auth:api');

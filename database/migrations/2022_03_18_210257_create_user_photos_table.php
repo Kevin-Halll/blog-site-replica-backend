@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onUpdate('cascade');
-            $table->string('photo_url');
+            $table->string('file_path');
             $table->string('caption')->nullable();
             $table->softDeletes();
             $table->timestamps();

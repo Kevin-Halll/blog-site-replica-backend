@@ -24,7 +24,7 @@ class StoreUserPhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            // 'file'  => 'required|mimes:png,jpg,jpeg,gif|max:2305',
         ];
     }
 }

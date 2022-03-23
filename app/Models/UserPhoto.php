@@ -15,12 +15,7 @@ class UserPhoto extends Model
 
     protected $fillable = [
         'user_id',
-        'company_id',
-        'star_rating', 
-        'title', 
-        'content', 
-        'helpful_count',
-        'not_helpful_count',
-        'is_active'
+        'file_path', 
+        'caption', 
     ];
 }
