@@ -17,8 +17,8 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained();
             $table->text('address_line_1')->nullable();
             $table->text('address_line_2')->nullable();
-            $table->string('parish')->nullable();
-            $table->string('city')->nullable();
+            $table->text('parish')->nullable();
+            $table->text('city')->nullable();
             $table->timestamps();
         });
     }
