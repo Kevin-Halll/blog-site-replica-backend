@@ -21,10 +21,10 @@ return new class extends Migration
             $table->foreignId('company_id')
                 ->constrained('companies')
                 ->onUpdate('cascade');
-            $table->foreignId('review_id')
+            $table->integer('review_id')
+                ->nullable()
                 ->constrained('reviews')
-                ->onUpdate('cascade')
-                ->nullable();
+                ->onUpdate('cascade');
             $table->string('file_path');
             $table->string('caption')->nullable();
             $table->string('tags')->nullable();

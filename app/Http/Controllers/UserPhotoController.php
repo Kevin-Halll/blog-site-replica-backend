@@ -121,8 +121,6 @@ class UserPhotoController extends Controller
     public function destroy(UserPhoto $request, $id)
     {
         $img = UserPhoto::find($id);
-        $file_path = $img->file_path;
-        // dd($file_path);
         
         if( $img != null){
             Storage::delete($img->file_path);
@@ -130,6 +128,5 @@ class UserPhotoController extends Controller
             return success([], "image deleted successfully", 200);
         }
         return error([], "Image not found", 404);
-
     }
 }

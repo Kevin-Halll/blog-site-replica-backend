@@ -9,9 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserPhoto extends Model
 {
-    use HasFactory, HasApiTokens;
+    use HasFactory, HasApiTokens, SoftDeletes;
 
-    use SoftDeletes;
 
     protected $fillable = [
         'user_id',

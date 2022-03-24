@@ -25,6 +25,8 @@ class StoreUserPhotoRequest extends FormRequest
     {
         return [
             // 'file'  => 'required|mimes:png,jpg,jpeg,gif|max:2305',
+            'user_id' => ['required', 'integer'],
+            'caption' => ['string', 'max:255'],
         ];
     }
 }

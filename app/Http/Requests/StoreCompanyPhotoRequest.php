@@ -13,7 +13,7 @@ class StoreCompanyPhotoRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,12 @@ class StoreCompanyPhotoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'company_id' => ['required'],
+            'user_id' => ['required'],
+            'review_id' => ['integer'],
+            'caption' => ['string', 'max:255'],
+            'tags' => ['string'],
+            'category' => ['string']
         ];
     }
 }
